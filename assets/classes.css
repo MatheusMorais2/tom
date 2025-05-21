@@ -1,0 +1,14 @@
+.responsive {
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 640px) {
+        flex-direction: row;
+    }
+}
+
+.font {
+    font-family: "Lora";
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
