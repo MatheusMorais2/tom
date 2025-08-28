@@ -1,0 +1,35 @@
+package templates
+
+import (
+	"tom/internal/core/domain"
+	"tom/internal/styles"
+)
+
+templ Article(post domain.Article) {
+	<div id="content" class={ content(styles.Pallete()) }>
+		<div class={ title() }>{ post.Title }</div>
+		<div class={ subtitleBar() }>
+			<p>by { post.Author }</p>
+			<p>Published at: { post.CreatedAt.Format("02/01/2006") }</p>
+		</div>
+		<div class={ article() }>{ post.Content }</div>
+	</div>
+}
+
+css article() {
+	width: 100%;
+}
+
+css title() {
+	font-size: 30px;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+css subtitleBar() {
+	width: 100%;
+	font-size: 12px;
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: 20px;
+}

@@ -1,0 +1,2 @@
+ALTER TABLE articles DROP COLUMN IF EXISTS author;
+ALTER TABLE articles RENAME TO posts;

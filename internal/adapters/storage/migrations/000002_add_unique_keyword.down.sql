@@ -1,0 +1,1 @@
+ALTER TABLE keywords DROP CONSTRAINT IF EXISTS unique_word;

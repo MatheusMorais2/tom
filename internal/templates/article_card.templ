@@ -1,0 +1,50 @@
+package templates
+
+import (
+	"fmt"
+	"tom/internal/core/domain"
+	"tom/internal/styles"
+)
+
+templ ArticleCard(article domain.Article) {
+	<div
+		class={ articleCard(styles.Pallete()) }
+		hx-get={ fmt.Sprint("/article?id=", article.Id) }
+		hx-target="#content"
+		hx-swap="outerHTML"
+		hx-push-url="true"
+	>
+		<p class={ cardTitle() }>{ article.Title }</p>
+		<div class={ cardDetails() }>
+			{ article.Summary }
+		</div>
+	</div>
+}
+
+css articleCard(colors *styles.ColorPallete) {
+	width: 90%;
+	height: auto;
+	padding: 5px 0px;
+	border-radius: 2px;
+	border-left-style: solid;
+	border-left-width: 4px;
+	border-left-color: { colors.Secondary };
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 10px;
+	overflow: hidden;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+css cardTitle() {
+	font-weight: bold;
+	font-size: 18px;
+	margin-bottom: 5px;
+}
+
+css cardDetails() {
+	display: flex;
+	justify-content: space-between;
+}

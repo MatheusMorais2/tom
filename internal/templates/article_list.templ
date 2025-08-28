@@ -1,0 +1,17 @@
+package templates
+
+import "tom/internal/core/domain"
+
+templ ArticleList(articles []*domain.Article) {
+	<div id="articleList" class={ articleList() }>
+		for _, article := range articles {
+			@Article(*article)
+		}
+	</div>
+}
+
+css articleList() {
+	width: 100%;
+	display: flex;
+	background-color: red;
+}

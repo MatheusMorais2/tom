@@ -1,0 +1,30 @@
+package templates
+
+import (
+	"fmt"
+	"strings"
+)
+
+templ NavButton(name string) {
+	<div
+		class={ navButton() }
+		hx-get={ fmt.Sprint("/", name) }
+		hx-target="#content"
+		hx-swap="outerHTML"
+		onmouseover="this.style.textDecoration='underline'"
+		onmouseout="this.style.textDecoration='none'"
+	>
+		{ CapitalizeFirstLetter(name) }
+	</div>
+}
+
+func CapitalizeFirstLetter(s string) string {
+	var firstLetter string = string(s[0])
+	restOfWord := strings.TrimPrefix(s, firstLetter)
+	return strings.ToUpper(firstLetter) + restOfWord
+}
+
+css navButton() {
+	font-weight: 700;
+	cursor: pointer;
+}

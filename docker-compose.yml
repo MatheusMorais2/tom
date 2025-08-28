@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      - DB_USER: ${DB_USER} 
+      - DB_NAME: ${DB_NAME}
+      - DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "${DB_NAME}", "-h", "${DB_HOST}", "-p", "${DB_PORT}", "-U", "${DB_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    network:
+      - backend
+
+  app:
+    build: .
+    container_name: go-app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST: ${DB_HOST}
+      - DB_PORT: ${DB_PORT}
+      - DB_USER: ${DB_USER}
+      - DB_PASSWORD: ${DB_PASSWORD} 
+      - DB_NAME: ${DB_NAME}
+    network:
+      - backend
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
+    driven: bridge

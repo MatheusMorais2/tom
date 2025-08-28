@@ -1,0 +1,49 @@
+package templates
+
+import (
+	"fmt"
+	"time"
+	"tom/internal/core/domain"
+	"tom/internal/styles"
+)
+
+var date = time.Now()
+var post = domain.Article{
+	Id:        "idman",
+	Author:    "Matheus Morais",
+	Content:   "Alo amor to the ligando d euma confusao ta um barulho uma confusao mas eu preciso tanto te falar depois das 3, to te esperando no meusmo lugar, to doido pra tee falar, viver amsi uma noite de aventura",
+	Title:     "Como fazer essa merda funcionar",
+	CreatedAt: &date,
+	Summary:   "Essa porra eh uma porra pra resumir o caralho do caralho",
+}
+
+type LoadOrder struct {
+	Skip  int
+	Limit int
+}
+
+templ HomePage(loadOrder LoadOrder) {
+	<div
+		id="content"
+		class={ content(styles.Pallete()) }
+		hx-get={ fmt.Sprintf("/article-list?skip=%d&limit=%d", loadOrder.Skip, loadOrder.Limit) }
+		hx-trigger="click"
+	>
+		Welcome to the Theatre of Morals, the show is about to begin.
+		@ArticleCard(post)
+	</div>
+}
+
+css content(colors *styles.ColorPallete) {
+	width: 90%;
+	box-sizing: border-box;
+	padding: 10px 20px;
+	border: solid 1px;
+	border-color: { colors.Secondary };
+	display: flex;
+	flex-direction: column;
+	justiy-content: center;
+	align-items: center;
+	border-radius: 5px;
+	font-size: 10px;
+}
