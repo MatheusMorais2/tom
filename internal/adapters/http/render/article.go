@@ -10,24 +10,23 @@ import (
 	//"tom/internal/core/service"
 )
 
-type ArticleListController struct {
+type ArticleController struct {
     service port.IArticleService
 }
 
-func NewArticleListController(service port.IArticleService) *ArticleListController {
-    return &ArticleListController{
+func NewArticleController(service port.IArticleService) *ArticleController {
+    return &ArticleController{
         service: service,
     }
 }
 
-func (c *ArticleListController) HandleArticleList(w http.ResponseWriter, r *http.Request) {
+func (c *ArticleController) HandleListArticles(w http.ResponseWriter, r *http.Request) {
     loadOrder := httpUtils.GetLoadOrder(r)    
-
-    category := r.URL.Query().Get("category")
 
     articleList := []*domain.Article{}
     var err error
 
+    category := r.URL.Query().Get("category")
     switch category {
     case "auditorium":
         articleList, err = c.service.ListArticlesByCategory(r.Context(), 
@@ -57,9 +56,11 @@ func (c *ArticleListController) HandleArticleList(w http.ResponseWriter, r *http
     } 
 
     if err != nil {
-        fmt.Errorf("Error getting article list: ", err)
+        fmt.Println("Error getting article list: ", err)
+        w.WriteHeader(http.StatusInternalServerError)
     }
 
+    fmt.Println("article list no controller de render: ", articleList)
     component := templates.ArticleList(articleList)
 
     var htmxHandler = HtmxHandler{
@@ -67,4 +68,22 @@ func (c *ArticleListController) HandleArticleList(w http.ResponseWriter, r *http
     }
 
     htmxHandler.ServeHTTP(w, r)
+}
+
+func (c *ArticleController) GetArticleById(w http.ResponseWriter, r *http.Request) {
+    id := r.URL.Query().Get("id")
+
+    article, err := c.service.GetArticleById(r.Context(), id)
+    if err != nil {
+        fmt.Println("Error getting article: ", err)
+        w.WriteHeader(http.StatusInternalServerError)
+    }
+
+    component := templates.Article(*article)
+
+    var htmxHandler = HtmxHandler{
+        Component: component,
+    }
+
+    htmxHandler.ServeHTTP(w, r )
 }

@@ -10,6 +10,7 @@ templ ArticleCard(article domain.Article) {
 	<div
 		class={ articleCard(styles.Pallete()) }
 		hx-get={ fmt.Sprint("/article?id=", article.Id) }
+		hx-trigger="click"
 		hx-target="#content"
 		hx-swap="outerHTML"
 		hx-push-url="true"

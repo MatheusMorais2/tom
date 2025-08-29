@@ -31,15 +31,17 @@ func (ar *ArticleRepository) CreateArticle(ctx context.Context, article *domain.
 }
 
 func (ar *ArticleRepository) GetArticleById(ctx context.Context, id string) (*domain.Article, error) {
-	article := &domain.Article{}
+	article := &domain.Article{
+		Category: &domain.Category{},
+		}
 
-	query := `SELECT a.id, a.title, a.summary, a.content, c.id, c.name, a.created_at, a.updated_at
-        FROM article a 
+	query := `SELECT a.id, a.title, a.summary, a.author, a.content, c.id, c.name, a.created_at, a.updated_at
+            FROM articles a 
         LEFT JOIN categories c ON c.id = a.category_id
         WHERE a.id = $1`
 
 	err := ar.db.QueryRowContext(ctx, query, id).Scan(
-		&article.Id, &article.Title, &article.Summary, &article.Content, &article.Category.Id, &article.Category.Name, &article.CreatedAt, &article.UpdatedAt,
+		&article.Id, &article.Title, &article.Summary, &article.Author, &article.Content, &article.Category.Id, &article.Category.Name, &article.CreatedAt, &article.UpdatedAt,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("Error getting post: %+v", err)
@@ -70,7 +72,8 @@ func (ar *ArticleRepository) GetArticleById(ctx context.Context, id string) (*do
 }
 
 func (ar *ArticleRepository) ListArticles(ctx context.Context, skip, limit int) ([]*domain.Article, error) {
-	query := `SELECT a.id, a.title, a.summary, c.id, c.name, a.created_at, a.updated_at
+	fmt.Println("repo chegou")
+	query := `SELECT a.id, a.title, a.summary, a.author, c.id, c.name, a.created_at, a.updated_at
         FROM articles a
         LEFT JOIN categories c ON c.id = a.category_id
         ORDER BY created_at DESC
@@ -85,15 +88,21 @@ func (ar *ArticleRepository) ListArticles(ctx context.Context, skip, limit int) 
 
 	posts := []*domain.Article{}
 
+	fmt.Println("repo chegou 2")
 	for rows.Next() {
-		post := &domain.Article{}
-		err := rows.Scan(&post.Id, &post.Title, &post.Summary, &post.Category.Id, &post.Category.Name, &post.CreatedAt, &post.UpdatedAt)
+		post := &domain.Article{
+			Category: &domain.Category{},
+		}
+		fmt.Println("repo chegou dentro do for")
+		err := rows.Scan(&post.Id, &post.Title, &post.Summary, &post.Author, &post.Category.Id, &post.Category.Name, &post.CreatedAt, &post.UpdatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("Error scanning posts: %+v", err)
 		}
 		posts = append(posts, post)
+		fmt.Println("repo chegou cabou um loop do for em")
 	}
 
+	fmt.Println("repo chegou 3")
 	return posts, nil
 }
 

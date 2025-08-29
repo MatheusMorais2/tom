@@ -45,12 +45,12 @@ func main() {
      _ = service.NewKeywordService(keywordRepo)
     
     articleController := api.NewArticleController(articleService)
-    articleListController := render.NewArticleListController(articleService)
+    renderArticleController := render.NewArticleController(articleService)
 
     mux := http.NewServeMux()
 
     renderApi := render.NewRenderApi(mux)
-    renderApi.Router(articleListController)
+    renderApi.Router(renderArticleController)
 
     API := api.NewApi(mux)
     API.Router(articleController)

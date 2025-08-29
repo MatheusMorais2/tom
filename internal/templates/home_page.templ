@@ -27,10 +27,12 @@ templ HomePage(loadOrder LoadOrder) {
 		id="content"
 		class={ content(styles.Pallete()) }
 		hx-get={ fmt.Sprintf("/article-list?skip=%d&limit=%d", loadOrder.Skip, loadOrder.Limit) }
-		hx-trigger="click"
+		hx-target="#article-list"
+		hx-trigger="load"
+		hx-swap="outerHTML"
 	>
 		Welcome to the Theatre of Morals, the show is about to begin.
-		@ArticleCard(post)
+		<div id="article-list"></div>
 	</div>
 }
 

@@ -3,9 +3,9 @@ package templates
 import "tom/internal/core/domain"
 
 templ ArticleList(articles []*domain.Article) {
-	<div id="articleList" class={ articleList() }>
+	<div id="article-list" class={ articleList() }>
 		for _, article := range articles {
-			@Article(*article)
+			@ArticleCard(*article)
 		}
 	</div>
 }
@@ -13,5 +13,5 @@ templ ArticleList(articles []*domain.Article) {
 css articleList() {
 	width: 100%;
 	display: flex;
-	background-color: red;
+	flex-direction: column;
 }

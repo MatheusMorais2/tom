@@ -36,7 +36,7 @@ func ArticleList(articles []*domain.Article) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"articleList\" class=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"article-list\" class=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -54,7 +54,7 @@ func ArticleList(articles []*domain.Article) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for _, article := range articles {
-			templ_7745c5c3_Err = Article(*article).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ArticleCard(*article).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -71,7 +71,7 @@ func articleList() templ.CSSClass {
 	templ_7745c5c3_CSSBuilder := templruntime.GetBuilder()
 	templ_7745c5c3_CSSBuilder.WriteString(`width:100%;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`display:flex;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`background-color:red;`)
+	templ_7745c5c3_CSSBuilder.WriteString(`flex-direction:column;`)
 	templ_7745c5c3_CSSID := templ.CSSID(`articleList`, templ_7745c5c3_CSSBuilder.String())
 	return templ.ComponentCSSClass{
 		ID:    templ_7745c5c3_CSSID,

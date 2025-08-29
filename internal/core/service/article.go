@@ -64,11 +64,12 @@ func (as *ArticleService) GetArticleById(ctx context.Context, id string) (*domai
 
 func (as *ArticleService) ListArticles(ctx context.Context, skip, limit int) ([]*domain.Article, error) {
 	fmt.Printf("\nchegou no service list post com: %v e %v", skip, limit)
-	posts, err := as.articleRepo.ListArticles(ctx, skip, limit)
+	articles, err := as.articleRepo.ListArticles(ctx, skip, limit)
 	if err != nil {
 		return nil, err
 	}
-	return posts, nil
+    fmt.Println("saiu do service em")
+	return articles, nil
 }
 
 func (as *ArticleService) ListArticlesByCategory(ctx context.Context, category *domain.Category, skip, limit int) ([]*domain.Article, error) {
